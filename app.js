@@ -1,15 +1,14 @@
-const express = require('express');
-const app = express();
-const port = 80;
+'use strict';
 
-app.get('/', (req, res) => {
-	res.send('Hello World!');
-});
+let spdy = require('spdy'); 
 
-app.get('/api/:id', (req, res) => {
-	res.send(`Get resource for ${req.params.id}.`);
-});
-
-app.listen(port, () => {
-	console.log(`Example app listening at http://localhost:${port}`);
-});
+spdy.createServer({
+	spdy: {
+		plain: true,
+		'x-forwarded-for': true,
+		ssl: false
+	}
+}, function(req, res) {
+    res.writeHead(200);
+    res.end('Hello world over HTTP/2');
+}).listen(3000);
